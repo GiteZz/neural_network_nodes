@@ -7,7 +7,7 @@ def to_vector(value):
     return ret_list
 
 def get_mnist_data():
-    mndata = MNIST('D:\\Programmeren\\Python\\color_predictor\\mnist')
+    mndata = MNIST('D:\\Programmeren\\Python\\neural_network_nodes\\mnist')
     mndata.gz = True
     training = mndata.load_training()
     training_img = training[0]
