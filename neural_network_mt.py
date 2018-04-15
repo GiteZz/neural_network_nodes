@@ -70,20 +70,13 @@ class neural_network:
         # runs through batch and errors/activations get saved in the node itself
         batch_amount = len(batch)
 
-        pool = ThreadPool(batch_amount)
-        pool.starmap(self.back_propagate,
-                     zip(range(batch_amount), batch))
-
-        pool.close()
-        pool.join()
-
-    def back_propagate(self, index, tup):
-        self.calc_output(tup[0], index=index)
-        # this calculates the error of the last layer, diff from other layers
-        self.calc_error_last(tup[1], index=index)
-        # loop starts at second to last layer and runs to first layer
-        for layer_index in range(self.amount_layers - 2, 0, -1):
-            self.calc_error(layer_index, index=index)
+        for index in range(batch_amount):
+            self.calc_output(batch[index][0], index=index)
+            # this calculates the error of the last layer, diff from other layers
+            self.calc_error_last(batch[index][1], index=index)
+            # loop starts at second to last layer and runs to first layer
+            for layer_index in range(self.amount_layers - 2, 0, -1):
+                self.calc_error(layer_index, index=index)
 
     def adjust_weights_bias(self, eta):
         for i in range(self.amount_layers - 1, 0, -1):
