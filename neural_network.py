@@ -18,8 +18,8 @@ class neural_network:
                 if layer_index == 0:
                     self.layers[layer_index].append(neural_node(0, [], [],batch_amount))
                 else:
-                    self.layers[layer_index].append(neural_node(random.gauss(0.0, 1.0)
-                                                                , rand_float_array(layers[layer_index - 1])
+                    self.layers[layer_index].append(neural_node(0.5
+                                                                , [0.5] * (layers[layer_index - 1])
                                                                 , self.layers[layer_index - 1]
                                                                 , batch_amount))
         for layer_index in range(len(layers) - 1):
@@ -66,7 +66,7 @@ class neural_network:
             this_node.errors[index] = 0
             for next_node_index in range(len(this_node.output_nodes)):
                 this_node.errors[index] += this_node.weights[next_node_index]\
-                                           * this_node.output_nodes[next_node_index].errors[next_node_index]\
+                                           * this_node.output_nodes[next_node_index].errors[index]\
                                            * sigmoid_prime(this_node.weighted_input[index])
 
 
@@ -109,7 +109,7 @@ class neural_network:
     def learn(self, eta, batch_size, training, epoch):
         training_size = len(training)
         for _ in range(epoch):
-            random.shuffle(training)
+            # random.shuffle(training)
             for i in range(0, training_size, batch_size):
                 #print("currently on batch: " + str(i))
                 batch = training[i: i + batch_size]
@@ -142,7 +142,7 @@ class neural_node:
         total_sum = self.bias
 
         for node_index in range(len(self.input_nodes)):
-            total_sum = self.weights[node_index] * self.input_nodes[node_index].outputs[index]
+            total_sum += self.weights[node_index] * self.input_nodes[node_index].outputs[index]
         self.weighted_input[index] = total_sum
         self.outputs[index] = sigmoid(self.weighted_input[index])
 
@@ -191,7 +191,7 @@ def cost_function(desired, output):
 
 if __name__ == "__main__":
     batch_size = 10
-    nn = neural_network([3,3,2], batch_size)
+    nn = neural_network([3,6,2], batch_size)
 
     with open('training_data', 'rb') as fp:
         training_data = _pickle.load(fp)
@@ -199,7 +199,7 @@ if __name__ == "__main__":
     with open('validation_data', 'rb') as fp:
         validation_data = _pickle.load(fp)
 
-    nn.learn(.05, batch_size, training_data, 20)
+    nn.learn(.15, batch_size, training_data, 20)
 
     print(nn.test(validation_data))
     a = 5

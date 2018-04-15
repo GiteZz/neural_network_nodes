@@ -57,5 +57,13 @@ if __name__ == "__main__":
         w_b = white_or_black(rgb)
         data_list_validation.append((scale_rgb(rgb), w_b))
 
+    amount_testing_data = 2000
+    data_list_testing = []
+    for _ in range(amount_testing_data):
+        rgb = random_rgb()
+        w_b = white_or_black(rgb)
+        data_list_testing.append((scale_rgb(rgb), w_b))
+
     save_list(data_list_training, "training_data")
     save_list(data_list_validation, "validation_data")
+    save_list(data_list_testing, "testing_data")
